@@ -6,7 +6,7 @@ import Box from "../components/Box";
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
-  const [filteredRestaurants, setFilteredReastaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]); 
   useEffect(() => {
     fetch("http://localhost:5000/restaurants")
       .then((res) => {
@@ -14,7 +14,7 @@ export default function Home() {
       })
       .then((response) => {
         setRestaurants(response);
-        setFilteredReastaurants(response);
+        setFilteredRestaurants(response);
       })
       .catch((err) => {
         console.log(err.message);
@@ -25,11 +25,9 @@ export default function Home() {
     <>
       <div className="container mx-auto">
         <Header />
-        <Search restaurants={restaurants} setFilteredReastaurants={setFilteredReastaurants} />
+        <Search restaurants={restaurants} setFilteredRestaurants={setFilteredRestaurants} />
         <Restaurants restaurants={filteredRestaurants} />
       </div>
     </>
   );
 }
-
-// export default Home;
