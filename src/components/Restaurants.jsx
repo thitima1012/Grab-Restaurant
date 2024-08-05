@@ -1,5 +1,6 @@
-import React from "react";
+//import React from "react";
 import Card from "./Card";
+import { useState, useEffect } from "react";
 
 const Restaurants = ({ restaurants }) => {
   return (

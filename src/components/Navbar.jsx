@@ -1,6 +1,9 @@
 import React from 'react'
+import { useAuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
+  //const [user, logout] = useAuthContext();
+  //console.log("user,", user);
   return (
     <div>
       <div className="navbar bg-base-100">

@@ -1,5 +1,5 @@
-import api from "./api";
-import Tokenservice from "./token.service";
+import api from "../services/api";
+import Tokenservice from "../services/token.service";
 
 const API_URL = "/api/v1/auth";
 
