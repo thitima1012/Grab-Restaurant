@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Search from "../components/Search";
 import Restaurants from "../components/Restaurants";
-import Box from "../components/Box";
+import Card from "../components/Card";
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
