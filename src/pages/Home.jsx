@@ -2,23 +2,29 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Search from "../components/Search";
 import Restaurants from "../components/Restaurants";
-import Card from "../components/Card";
+import RestaurantService from "../services/restaurant.service";
+import Swal from "sweetalert2";
 
-export default function Home() {
+function Home() {
   const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]); 
   useEffect(() => {
-    fetch("http://localhost:5173/")
-      .then((res) => {
-        return res.json();
-      })
-      .then((response) => {
-        setRestaurants(response);
-        setFilteredRestaurants(response);
-      })
-      .catch((err) => {
-        console.log(err.message);
+    const getRestaurant = async ()=>{
+      try {
+      const response = RestaurantService.getAllRestaurant();
+      if(response.status === 200) {
+        setRestaurants(response.data);a
+        setFilteredRestaurants(response.dta);
+      }
+    }catch (error){
+      Swal.fire({
+        titie: "Get All Restaurant",
+        text: error?.response?.data?.message || 
+        error.message,icon:"error",
       });
+    }
+    };
+    getRestaurant();
   }, []);
 
   return (
@@ -31,3 +37,4 @@ export default function Home() {
     </>
   );
 }
+export default Home;
