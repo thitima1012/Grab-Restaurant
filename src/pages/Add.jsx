@@ -12,17 +12,18 @@ const Add = () => {
     setRestaurant({...restaurant,[name]:value})
   }
   const handSubmit = async () =>{
-    try {
-      const response = await fetch("http://localhost:5000/restaurants/",{
-        method:"POST",
-        body: JSON.stringify(restaurant),
-      });
-      if(response.ok){
-        alert("Restaurant added successfully!");
+      try {
+      const response = await RestaurantService.editRestaurant(id, restaurant);
+      if(response.status === 200) {
+        Swal.fire({
+          title: "Restaurant update",
+          text: response.data.message,
+          icon: "success"
+        });
         setRestaurant({
-          title: "",
+          name: "",
           type: "",
-          img: "",
+          imageUrl: "",        
         });
       }
     }catch(error){
