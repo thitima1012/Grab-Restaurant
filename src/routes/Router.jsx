@@ -4,7 +4,13 @@ import Home from "../pages/Home.jsx";
 import Edit from "../pages/Edit.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
+import Notallowed from "../pages/NotAllowed.jsx"
+import AdminPage from "../pages/AdminPage.jsx"
+import UserProfilePage from "../pages/UserProfilePage.jsx"
+import UserPage from "../pages/UserPage.jsx"
 import Layout from "../components/Layout.jsx";
+import AdminLayout from "../components/AdminLayout.jsx"
+import ModOrAdminPage from "../pages/ModOrAdminPage.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -20,6 +26,12 @@ const Router = createBrowserRouter([
         element: <Add />,
       },
       {
+        path: "/edit/:id",
+        element: <ModOrAdminPage>
+          <Edit/>
+        </ModOrAdminPage>
+      },
+      {
         path: "edit/:id",
         element: <Edit />,
       },
@@ -27,6 +39,10 @@ const Router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "notallowed",
+        element: <Notallowed />,
       },
     ],
   },
