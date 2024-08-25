@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
+//import Header from "../components/Header";
 import Search from "../components/Search";
 import Restaurants from "../components/Restaurants";
 import RestaurantService from "../services/restaurant.service";

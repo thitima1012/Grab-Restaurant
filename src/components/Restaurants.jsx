@@ -11,8 +11,8 @@ const Restaurants = ({ restaurants }) => {
             <Card
               key={restaurant.id}
               id={restaurant.id}
-              title={restaurant.title}
-              img={restaurant.img}
+              title={restaurant.name}
+              imageUrl={restaurant.imageUrl}
               type={restaurant.type}
             />
           );

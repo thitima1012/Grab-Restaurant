@@ -1,21 +1,13 @@
 import { useEffect, useState } from "react";
 import AuthService from "../services/auth.service";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useAuthContext } from "../context/AuthContext";
-
 const Login = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
-
-  // const [login] = useAuthContext();
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setUser((user) => ({ ...user, [name]: value }));
-  // };
     const navigate = useNavigate();
     
      const { login, user: loggedInUser } = useAuthContext();
@@ -24,12 +16,10 @@ const Login = () => {
          navigate("/");
        }
      }, [loggedInUser]);
-
      const handleChange = (e) => {
        const { name, value } = e.target;
        setUser((user) => ({ ...user, [name]: value }));
      };
-
   const handleSubmit = async () => {
     try {
       const currentUser = await AuthService.login(user.username, user.password);

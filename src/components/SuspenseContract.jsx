@@ -1,7 +1,7 @@
 import Loading from "./Loading";
 import loadingAnimation from "../Loading/Animation - 1724317205322.json";
 
-const SuspenseContent = () => {
+const SuspenseContract = () => {
   return (
     <div className="w-full h-screen text-grey-300 bg-base-100">
       <div className="flex items-center justify center h-full">
@@ -11,4 +11,4 @@ const SuspenseContent = () => {
   );
 };
 
-export default SuspenseContent;
+export default SuspenseContract;

@@ -1,11 +1,27 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import RestaurantService from "../services/restaurant.service";
 import Swal from "sweetalert2";
+import { useAuthContext } from "../context/AuthContext";
 
 const Edit = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuthContext();
+  useEffect(() => {
+    if (
+      !user ||
+      (user &&
+        !(
+          user.roles.includes("ROLES_MODERATOR") ||
+          user.roles.includes("ROLES_ADMIN")
+        ))
+    ) {
+      navigate("/");
+    }
+  }, [user]);
+
+  const { id } = useParams();
   const [restaurant, setRestaurant] = useState({
     name: "",
     type: "",
@@ -20,20 +36,24 @@ const Edit = () => {
       }
     })
   }, [id]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurant, [name]: value });
   };
-  const handSubmit = async () => {
+
+  const handSubmit = async (e) => {
     try {
       const response = await RestaurantService.editRestaurant(id, restaurant);
       if(response.status === 200) {
         Swal.fire({
           title: "Restaurant update",
-          text: response.data.message,
+          text: "response.data.message",
           icon: "success"
+        }).then(() => {
+          setRestaurants({ name: "", type: "", imgUrl: "" });
+          window.location.reload();
         });
-        navigate("/")
       }
     } catch (error) {
       Swal.fire({
@@ -43,15 +63,15 @@ const Edit = () => {
       });
     }
   };
-
+//*********************************** */
   return (
     <div className="container mx-auto">
       <div>
-        <h1 className="text-2 text-center">Add Restaurant</h1>
+        <h1 className="text-2 text-center">Edit Restaurant</h1>
       </div>
       <div className="space-y-2">
         <label className="input input-bordered flex items-center gap-2">
-          Title
+          Name
           <input
             type="text"
             className="grow"
@@ -73,7 +93,7 @@ const Edit = () => {
           />
         </label>
         <label className="input input-bordered flex items-center gap-2">
-          img
+          imageUrl
           <input
             type="text"
             className="grow"
@@ -83,8 +103,8 @@ const Edit = () => {
             value={restaurant.imageUrl}
           />
         </label>
-        <button className="btn btn-success" onClick={handSubmit}>
-          Add Restaurant
+        <button className="btn btn-success" type="submit" onClick={handSubmit}>
+          Edit Restaurant
         </button>
       </div>
     </div>

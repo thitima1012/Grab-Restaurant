@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 const NotAllowed = () => {
     const [counter, setCounter] = useState(5);
     const navigate = useNavigate();
@@ -23,6 +22,24 @@ const NotAllowed = () => {
         };
     },[navigate]);
     return (
-        <div></div>
-    )
-}
+        <div className="grid justify-center">
+          <div className="card bg-base-100 w-96 shadow-xl ">
+            <div className="card-body">
+              <h2 className="card-title">Page Not Allowed</h2>
+              <p>
+                You are not allowed to view this page. <br />
+                you will redirect in{" "}
+                <span className="countdown font-mono text-6xl">
+                  <span style={{ "--value": counter }}></span>
+                </span>{" "}
+                second.
+              </p>
+            </div>
+            <figure>
+              <img src={notAllowImg} alt="Shoes" />
+            </figure>
+          </div>
+        </div>
+    );
+};
+export default NotAllowed;

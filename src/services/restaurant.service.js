@@ -5,20 +5,36 @@ const RESTO_API = import.meta.env.VITE_RESTO_API;
 const getAllRestaurant = async () => {
   return await api.get(RESTO_API);
 };
+
 //get restaurant by Id
 const getRestaurantById = async (id) => {
   return await api.get(RESTO_API + `/${id}`); 
 }
 
+// edit restaurant
+const updateRestaurant = async (id, restaurant) => {
+  return await api.put(RESTO_API + `/${id}`, restaurant);
+};
+
+const deleteRestaurant = async (id) => {
+  return await api.delete(RESTO_API + `/${id}`);
+};
+
+const addRestaurant = async (restaurant) => {
+  return await api.post(RESTO_API, restaurant);
+};
+
 //update a restaurant data
-const editRestaurant = async (id, restaurant) => {
-  return await api.post(RESTO_API + `/${id}`,restaurant);
-}
+//const editRestaurant = async (id, restaurant) => {
+//  return await api.post(RESTO_API + `/${id}`,restaurant);
+//}
 
 const RestaurantService = {
   getAllRestaurant,
   getRestaurantById,
-  editRestaurant,
+  updateRestaurant,
+  deleteRestaurant,
+  addRestaurant,
 };
 
 export default RestaurantService;

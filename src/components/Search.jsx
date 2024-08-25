@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Search = ({ restaurants, setFilteredRestaurants }) => {
   const [keyword, setKeyword] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     setKeyword(e.target.value);
     if (e.target.value === "") {
       setFilteredRestaurants(restaurants);

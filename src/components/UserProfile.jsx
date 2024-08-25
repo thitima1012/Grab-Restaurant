@@ -1,6 +1,13 @@
-import React from "react";
+import { useAuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuthContext();
+  const handleLogout = () => {
+    logout(); 
+    navigate("/"); 
+  };
   return (
     <div className="dropdown dropdown-end">
       <div

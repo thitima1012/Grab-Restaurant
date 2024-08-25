@@ -1,13 +1,16 @@
-import { useAuthContext }  from "../context/AuthContext"
+import React from "react";
+import Restaurant from "./Restaurants";
+import { useAuthContext } from "../context/AuthContext";
+import RestaurantService from "../services/restaurant.service";
 
-
-const Card = ({ id, imageUrl, title, type }) => {
+const Card = ({ id, imageUrl, name, type }) => {
+  const { user } = useAuthContext();
   const handleDelete = async () => {
     try {
       const response = await fetch("http://localhost:5000/restaurants/" + id, {
         method: "DELETE",
       });
-      if (response.ok) {
+      if (response.status === 200) {
         alert("Restaurant has deleted");
         window.location.reload();
       }

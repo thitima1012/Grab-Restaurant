@@ -1,4 +1,5 @@
 import{useState} from "react";
+import Header from "./Header";
 import UserProfile from "./UserProfile";
 import LoginButton from "./LoginButton"
 import RegisterButton from "./RegisterButton";

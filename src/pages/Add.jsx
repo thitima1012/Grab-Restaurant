@@ -1,50 +1,82 @@
-//import React from 'react'
-import { useState } from 'react'
+import React from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import RestaurantService from "../services/restaurant.service";
+import Swal from "sweetalert2";
+import { useAuthContext } from "../context/AuthContext";
 
-const Add = () => {
-  const [restaurant, setRestaurant] =useState({
-    title:"",
-    type:"",
-    img:"",
+export const Add = () => {
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+  useEffect(() => {
+    if (
+      !user ||
+      (user &&
+        !(
+          user.roles.includes("ROLES_MODERATOR") ||
+          user.roles.includes("ROLES_ADMIN")
+        ))
+    ) {
+      navigate("/");
+    }
+  }, [user]);
+
+  const { id } = useParams();
+  const [restaurant, setRestaurant] = useState({
+    name: "",
+    type: "",
+    imageUrl: "",
   });
-  const handleChange =(e) =>{
-    const {name, value} = e.target;
-    setRestaurant({...restaurant,[name]:value})
-  }
-  const handSubmit = async () =>{
-      try {
+
+  //2. Get restaurant by ID
+  useEffect(() => {
+    RestaurantService.getRestaurantById(id).then((response)=>{
+      if(response.status === 200){
+        setRestaurant(response.data);
+      }
+    })
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRestaurant({ ...restaurant, [name]: value });
+  };
+
+  const handSubmit = async (e) => {
+    try {
       const response = await RestaurantService.editRestaurant(id, restaurant);
       if(response.status === 200) {
         Swal.fire({
           title: "Restaurant update",
-          text: response.data.message,
+          text: "response.data.message",
           icon: "success"
         });
-        setRestaurant({
-          name: "",
-          type: "",
-          imageUrl: "",        
-        });
+        navigate("/")
       }
-    }catch(error){
-      console.log(error);
+    } catch (error) {
+      Swal.fire({
+        title: "Restaurant update",
+        text: error?.response?.data?.message || error.message,
+        icon: "error",
+      });
     }
-  }
+  };
+//*********************************** */
   return (
     <div className="container mx-auto">
       <div>
-        
+        <h1 className="text-2 text-center">Add Restaurant</h1>
       </div>
       <div className="space-y-2">
         <label className="input input-bordered flex items-center gap-2">
-          Title
+          Name
           <input
             type="text"
             className="grow"
             placeholder="Restaurant Name"
-            name="title"
+            name="name"
             onChange={handleChange}
-            value={restaurant.title}
+            value={restaurant.name}
           />
         </label>
         <label className="input input-bordered flex items-center gap-2">
@@ -59,20 +91,21 @@ const Add = () => {
           />
         </label>
         <label className="input input-bordered flex items-center gap-2">
-          img
+          imageUrl
           <input
             type="text"
             className="grow"
             placeholder="Restaurant Name"
-            name="img"
+            name="imageUrl"
             onChange={handleChange}
-            value={restaurant.img}
+            value={restaurant.imageUrl}
           />
         </label>
-        <button className="btn btn-outline btn-error">Add Restaurant</button>
+        <button className="btn btn-success" type="submit" onClick={handSubmit}>
+          Add Restaurant
+        </button>
       </div>
     </div>
   );
-}
-
+};
 export default Add

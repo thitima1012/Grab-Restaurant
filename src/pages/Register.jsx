@@ -27,7 +27,7 @@ const Register = () => {
                 text: error.message,
                 icon:"success",
             });
-            serUser({
+            setUser({
                 username:"",
                 email:"",
                 password:"",
@@ -44,11 +44,12 @@ const Register = () => {
     }
   };
   const handleCancel = () => {
-    setUser({
-      username: "",
-      email: "",
-      password: "",
+    setUser({ 
+      userName: "", 
+      email: "", 
+      password: "" 
     });
+      navigate("/");
   };
   return (
     <div className="container mx-auto mt-4 max-w-96 my-auto">
