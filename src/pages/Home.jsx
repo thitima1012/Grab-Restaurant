@@ -1,35 +1,40 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
+//import Header from "../components/Header";
 import Search from "../components/Search";
 import Restaurants from "../components/Restaurants";
-import Box from "../components/Box";
+import RestaurantService from "../services/restaurant.service";
+import Swal from "sweetalert2";
 
-export default function Home() {
+function Home() {
   const [restaurants, setRestaurants] = useState([]);
-  const [filteredRestaurants, setFilteredReastaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]); 
   useEffect(() => {
-    fetch("http://localhost:5000/restaurants")
-      .then((res) => {
-        return res.json();
-      })
-      .then((response) => {
-        setRestaurants(response);
-        setFilteredReastaurants(response);
-      })
-      .catch((err) => {
-        console.log(err.message);
+    const getRestaurant = async ()=>{
+      try {
+      const response = RestaurantService.getAllRestaurant();
+      if(response.status === 200) {
+        setRestaurants(response.data);a
+        setFilteredRestaurants(response.dta);
+      }
+    }catch (error){
+      Swal.fire({
+        titie: "Get All Restaurant",
+        text: error?.response?.data?.message || 
+        error.message,icon:"error",
       });
+    }
+    };
+    getRestaurant();
   }, []);
 
   return (
     <>
       <div className="container mx-auto">
         <Header />
-        <Search restaurants={restaurants} setFilteredReastaurants={setFilteredReastaurants} />
+        <Search restaurants={restaurants} setFilteredRestaurants={setFilteredRestaurants} />
         <Restaurants restaurants={filteredRestaurants} />
       </div>
     </>
   );
 }
-
-// export default Home;
+export default Home;

@@ -1,33 +1,67 @@
-import React from 'react'
+import React from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import RestaurantService from "../services/restaurant.service";
+import Swal from "sweetalert2";
+import { useAuthContext } from "../context/AuthContext";
 
-const Add = () => {
-  const [restaurant, setRestaurant]= useState({
-    title:"",
-    type:"",
-    img:""
-  })
-  const handleChan = (e) =>{
-    const {name, value} = e.target;
-    setRestaurant({...restaurant,[name]:value})
-  }
-  const handSubmit = async ()=>{
-    try{
-      const reponse = await fetch("http://localhost:5000/restaurants", {
-        method: "POST",
-        body: JSON.stringify(restaurant),
-      });
-      if(reponse.ok){
-        alert("Restaurant added successfully!!!");
-        setRestaurant({
-          title:"",
-          type:"",
-          img:"",
-        });
-      }
-    }catch (error) {
-      console.log (error);
+export const Add = () => {
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+  useEffect(() => {
+    if (
+      !user ||
+      (user &&
+        !(
+          user.roles.includes("ROLES_MODERATOR") ||
+          user.roles.includes("ROLES_ADMIN")
+        ))
+    ) {
+      navigate("/");
     }
-  }
+  }, [user]);
+
+  const { id } = useParams();
+  const [restaurant, setRestaurant] = useState({
+    name: "",
+    type: "",
+    imageUrl: "",
+  });
+
+  //2. Get restaurant by ID
+  useEffect(() => {
+    RestaurantService.getRestaurantById(id).then((response)=>{
+      if(response.status === 200){
+        setRestaurant(response.data);
+      }
+    })
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRestaurant({ ...restaurant, [name]: value });
+  };
+
+  const handSubmit = async (e) => {
+    try {
+      const response = await RestaurantService.editRestaurant(id, restaurant);
+      if(response.status === 200) {
+        Swal.fire({
+          title: "Restaurant update",
+          text: "response.data.message",
+          icon: "success"
+        });
+        navigate("/")
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Restaurant update",
+        text: error?.response?.data?.message || error.message,
+        icon: "error",
+      });
+    }
+  };
+//*********************************** */
   return (
     <div className="container mx-auto">
       <div>
@@ -35,14 +69,14 @@ const Add = () => {
       </div>
       <div className="space-y-2">
         <label className="input input-bordered flex items-center gap-2">
-          Title
+          Name
           <input
             type="text"
             className="grow"
             placeholder="Restaurant Name"
-            name="title"
+            name="name"
             onChange={handleChange}
-            value={restaurant.title}
+            value={restaurant.name}
           />
         </label>
         <label className="input input-bordered flex items-center gap-2">
@@ -57,20 +91,21 @@ const Add = () => {
           />
         </label>
         <label className="input input-bordered flex items-center gap-2">
-          img
+          imageUrl
           <input
             type="text"
             className="grow"
             placeholder="Restaurant Name"
-            name="img"
+            name="imageUrl"
             onChange={handleChange}
-            value={restaurant.img}
+            value={restaurant.imageUrl}
           />
         </label>
-        <button className='btn btn-success' onClick={handSubmit}>Add Restaurant</button>
+        <button className="btn btn-success" type="submit" onClick={handSubmit}>
+          Add Restaurant
+        </button>
       </div>
     </div>
   );
-}
-
+};
 export default Add

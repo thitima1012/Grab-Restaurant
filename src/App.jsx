@@ -1,17 +1,40 @@
-// import { useState } from "react";
-import "./App.css";
-import Restaurant from "./components/Restaurant";
+import React, { useState, useEffect } from "react";
+
 import Search from "./components/Search";
 import Header from "./components/Header";
-import { useEffect, useState } from "react";
-// import Card from "./components/Card";
-// import Card2 from "./components/Card2";
+import Restaurant from "./components/Restaurants";
 
 function App() {
-  
+  const [restaurants, setRestaurants] = useState([]);
+  const [filterRestaurant, setfilterRestaurant] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:5000/restaurants")
+      .then((res) => {
+        return res.json();
+      })
+      .then((response) => {
+        setRestaurants(response);
+        setfilterRestaurant(response);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
-
-
+  return (
+    <>
+      <div className="container flex flex-col items-center mx-auto space-y-4">
+        <Header />
+        <Search
+          restaurants={restaurants}
+          setfilterRestaurant={setfilterRestaurant}
+        />
+        <div className="container flex flex-row flex-wrap items-center justify-center">
+          <Restaurant restaurants={filterRestaurant} />
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default App;

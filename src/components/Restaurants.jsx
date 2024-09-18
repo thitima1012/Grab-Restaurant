@@ -1,5 +1,6 @@
-import React from "react";
-import Box from "./Box";
+//import React from "react";
+import Card from "./Card";
+import { useState, useEffect } from "react";
 
 const Restaurants = ({ restaurants }) => {
   return (
@@ -7,11 +8,11 @@ const Restaurants = ({ restaurants }) => {
       {restaurants &&
         restaurants.map((restaurant) => {
           return (
-            <Box
+            <Card
               key={restaurant.id}
               id={restaurant.id}
-              title={restaurant.title}
-              img={restaurant.img}
+              title={restaurant.name}
+              imageUrl={restaurant.imageUrl}
               type={restaurant.type}
             />
           );
